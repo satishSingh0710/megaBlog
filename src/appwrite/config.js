@@ -75,11 +75,42 @@ export class Service {
         conf.appwriteCollectionId,
         queries
       );
-      return false; 
+      return false;
     } catch (error) {
       console.log("Appwrite service::getActivePosts ", error);
     }
   }
+
+  // file upload service
+  async uploadFile(file) {
+    try {
+      return await this.bucket.createFile(
+        conf.appwriteBucketId,
+        ID.unique(),
+        file
+      );
+    } catch (error) {
+      console.log("Appwrite service::uploadFile ", error);
+    }
+  }
+
+  // delete file
+  async deleteFile(fileId) {
+    try {
+      await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  
+  getFilePreview(fileId){
+    return this.bucket.getFilePreview(
+      conf.appwriteBucketId, 
+      fileId
+    )
+  }
+
 }
 
 const service = new Service();
